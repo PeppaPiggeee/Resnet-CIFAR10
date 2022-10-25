@@ -25,7 +25,7 @@ def run(args):
 
         train_loss_.append(train_loss)
         test_loss_.append(test_loss)
-        train_acc_.append(train_loss)
+        train_acc_.append(train_acc)
         test_acc_.append(test_acc)
 
         if epoch % 10 == 0:
