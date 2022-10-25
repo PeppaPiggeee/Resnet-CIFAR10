@@ -16,19 +16,13 @@ Please go to [the official website](https://pytorch.org/) and download torch whi
 
 
 
-## Train
+## Train and Test
 
 ```
-CUDA_VISIBLE_DEVICES=0 python run.py --resume_last --resume_best
+CUDA_VISIBLE_DEVICES=0 python run.py 
 ```
 
-
-
-## Test
-
-```
-CUDA_VISIBLE_DEVICES=0 python run.py --resume_last --resume_best --test
-```
+Run the above command. The loss and accuracy of training and testing can be found in result.png.
 
 
 
