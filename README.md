@@ -36,10 +36,10 @@ CUDA_VISIBLE_DEVICES=0 python run.py --resume_last --resume_best --test
 
 > ```
 > @inproceedings{he2016deep,
-> title={Deep residual learning for image recognition},
-> author={He, Kaiming and Zhang, Xiangyu and Ren, Shaoqing and Sun, Jian},
-> booktitle={Proceedings of the IEEE conference on computer vision and pattern recognition},
-> pages={770--778},
-> year={2016}
+>   title={Deep residual learning for image recognition},
+>   author={He, Kaiming and Zhang, Xiangyu and Ren, Shaoqing and Sun, Jian},
+>   booktitle={Proceedings of the IEEE conference on computer vision and pattern recognition},
+>   pages={770--778},
+>   year={2016}
 > }
 > ```

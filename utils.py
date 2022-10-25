@@ -72,23 +72,44 @@ def save_checkpoint(model, optimizer, epoch, args, best= False):
                 'optimizer': optimizer.state_dict()},
                  os.path.join(args.ckpt_dir, fn))
 
-def load_CIFAR(args, train= True):
-    if train:
-        transform= transforms.Compose([
-            transforms.RandomCrop(32, padding=4),
-            transforms.RandomHorizontalFlip(),
-            transforms.ToTensor(),
-            transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
-        ])
-    else:
-        transform = transforms.Compose([
-            transforms.ToTensor(),
-            transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
-        ])
+def load_CIFAR(args):
+    train_transform= transforms.Compose([
+        transforms.RandomCrop(32, padding=4),
+        transforms.RandomHorizontalFlip(),
+        transforms.ToTensor(),
+        transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+    ])
+    test_transform = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+    ])
+    train_ds = datasets.CIFAR10(args.data_dir, train=True, download=True, transform=train_transform)
+    test_ds = datasets.CIFAR10(args.data_dir, train=False, download=True, transform=test_transform)
+    train_dl, test_dl = data.DataLoader(train_ds, args.bs), data.DataLoader(test_ds, args.bs)
+    return train_dl, test_dl
 
-    try:
-        ds = datasets.CIFAR10(args.data_dir, train=train, download=False, transform=transform)
-    except:
-        ds = datasets.CIFAR10(args.data_dir, train=train, download=True, transform=transform)
-    dl = data.DataLoader(ds, args.bs)
-    return dl
+def plot(train_loss, test_loss, train_acc, test_acc):
+    x = [i + 1 for i in range(len(train_loss))]
+    train_acc = [100 * acc for acc in train_acc]
+    test_acc = [100 * acc for acc in test_acc]
+    plt.figure(figsize=(24, 16), dpi=90)
+    plt.subplot(211)
+    plt.title('loss')
+    plt.xlabel('epoch')
+    plt.plot(x, train_loss, marker='^')
+    plt.plot(x, test_loss, marker='o')
+    plt.legend(['train', 'test'])
+    for i in range(len(x)):
+        plt.text(x[i], train_loss[i], "%.2f" % train_loss[i])
+        plt.text(x[i], test_loss[i], "%.2f" % test_loss[i])
+
+    plt.subplot(212)
+    plt.title('accuracy(%)')
+    plt.xlabel('epoch')
+    plt.plot(x, train_acc, marker='^')
+    plt.plot(x, test_acc, marker='o')
+    plt.legend(['train', 'test'])
+    for i in range(len(x)):
+        plt.text(x[i], train_acc[i], "%.2f" % train_acc[i])
+        plt.text(x[i], test_acc[i], "%.2f" % test_acc[i])
+    plt.savefig('result.png')
